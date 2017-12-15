@@ -59,7 +59,7 @@ public class BankerAlgorithm {
         isSafe(available, allocate, n, m, need, sequence);
         printSequence(sequence, n);
         
-        System.out.println("Do you want to request more resources to a specific process?");
+        System.out.println("\nDo you want to request more resources to a specific process?");
         System.out.print("[1]Yes \n[2]No\n");
         x = sc.nextInt();
         if(x == 1){
@@ -156,8 +156,8 @@ public class BankerAlgorithm {
     }
     
     private static void printSequence(int[] sequence, int n){
+        System.out.println("Sequence of Allocation: ");
         for(int i = 0; i < n; i++){
-            System.out.println("Sequence of Allocation: ");
             System.out.println("Process" + sequence[i]);
         }
         for(int i = 0; i < n; i ++){
