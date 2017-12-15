@@ -60,7 +60,7 @@ public class BankerAlgorithm {
         printSequence(sequence, n);
         
         System.out.println("Do you want to request more resources to a specific process?");
-        System.out.print("[1]Yes /n [2]No: ");
+        System.out.print("[1]Yes \n[2]No\n");
         x = sc.nextInt();
         if(x == 1){
             request(available, allocate,max, need, n, m, sequence);
