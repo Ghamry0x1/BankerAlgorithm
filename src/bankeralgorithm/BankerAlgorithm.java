@@ -15,6 +15,7 @@ public class BankerAlgorithm {
         int need[][];
         int available[];
         int sequence[];
+        int sequence2[];
         int initAvailable[];
         int n; //number of processes
         int m; //number of resources
@@ -31,6 +32,7 @@ public class BankerAlgorithm {
         allocate = new int[n][m];
         available = new int[m];
         sequence = new int[n];
+        sequence2 = new int[n];
         
         
         System.out.println("Enter allocation matrix: ");
@@ -55,18 +57,26 @@ public class BankerAlgorithm {
         }
         
         isSafe(available, allocate, n, m, need, sequence);
+        printSequence(sequence, n);
         
         System.out.println("Do you want to request more resources to a specific process?");
         System.out.print("[1]Yes /n [2]No: ");
         x = sc.nextInt();
         if(x == 1){
-            request(available, allocate,max, need, n, m);
-            boolean flag = isSafe(available, allocate, n, m, need, sequence);
+            request(available, allocate,max, need, n, m, sequence);
+            boolean flag = isSafe(available, allocate, n, m, need, sequence2);
+            if(flag)
+                printSequence(sequence2, n);
+            else {
+                System.out.print("Without requesting, Original ");
+                printSequence(sequence, n);
+            }
+            
         }
         sc.close();
     }
     
-    public static void request(int[] available,int[][] allocate, int[][] max, int[][] need, int n, int m){
+    public static void request(int[] available,int[][] allocate, int[][] max, int[][] need, int n, int m, int[] sequence){
         int req[] = new int[m];
         int processNum,loop=1;
         
@@ -98,13 +108,14 @@ public class BankerAlgorithm {
             }
             else 
                 System.out.println("There aren't enough available resources!");
-                System.out.println("Please enter 1 to try again or a negative number to terminate: ");
+                System.out.println("Please enter 1 to try again or a negative number to print the original sequence: ");
                 loop = sc.nextInt();
         }
+        printSequence(sequence, n);
         System.exit(0);
     }
     
-    public static boolean isSafe(int[] available, int[][] allocate, int n, int m, int[][] need,int[] sequence) {
+    public static boolean isSafe(int[] available, int[][] allocate, int n, int m, int[][] need,int[] seq) {
         boolean done[] = new boolean[n];
         int j = 0, p = 0;
         int av[] = new int [m];
@@ -118,7 +129,7 @@ public class BankerAlgorithm {
                  if(!done[i] && check(i, av, need, m)) {
                     for(int k = 0; k < m; k++)
                         av[k] = av[k] + allocate[i][k];
-                    sequence[p++] = i;
+                    seq[p++] = i;
                     allocated = done[i] = true;
                     j++;
                  }
@@ -127,7 +138,6 @@ public class BankerAlgorithm {
         
         if(j == n){
             System.out.println("\nProcesses are safely allocated!");
-            printSequence(sequence, n);
             return true;
         }
         else{
